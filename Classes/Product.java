@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Product implements Interfaces.Product {
     private int id;
@@ -45,7 +46,15 @@ public class Product implements Interfaces.Product {
     }
 
     @Override
-    public double calculatePrice(double percentageAdded) {
-        return 0;
+    public double calculatePrice(double percentageAdded, double percentageRemoved, int periodForDiscount) {
+        double price = this.deliveryPrice;
+        price += deliveryPrice * percentageAdded;
+        long daysUntilExpiry = this.expirationDate.until(LocalDate.now(), ChronoUnit.DAYS);
+
+        if (daysUntilExpiry <= periodForDiscount && daysUntilExpiry >= 0){
+            price -= price * percentageRemoved;
+        }
+
+        return price;
     }
 }

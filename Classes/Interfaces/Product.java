@@ -9,5 +9,5 @@ public interface Product {
     public LocalDate getExpirationDate();
     public boolean getEdible();
     public int getAmountLeft();
-    public double calculatePrice(double percentageAdded);
+    public double calculatePrice(double percentageAdded, double percentageRemoved, int daysTillExpiry);
 }
