@@ -7,5 +7,7 @@ public interface Product {
     public String getName();
     public double getDeliveryPrice();
     public LocalDate getExpirationDate();
-    public double getPrice();
+    public boolean getEdible();
+    public int getAmountLeft();
+    public double calculatePrice(double percentageAdded);
 }
