@@ -1,18 +1,18 @@
-import Interfaces.Cashier;
-import Interfaces.Product;
+import Interfaces.ICashier;
+import Interfaces.IProduct;
+import Interfaces.IReceipt;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Receipt implements Interfaces.Receipt {
+public class Receipt implements IReceipt {
     private int id;
-    private Cashier cashier;
+    private ICashier cashier;
     private LocalDateTime creationTime;
-    private ArrayList<Product> products;
+    private ArrayList<IProduct> products;
     private double price;
 
-    public Receipt(int _id, Cashier _cashier, LocalDateTime _creationTime, ArrayList<Product> _products, double _price){
+    public Receipt(int _id, ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price){
         this.id = _id;
         this.cashier = _cashier;
         this.products = _products;
@@ -26,7 +26,7 @@ public class Receipt implements Interfaces.Receipt {
     }
 
     @Override
-    public Cashier getCashier() {
+    public ICashier getCashier() {
         return this.cashier;
     }
 
@@ -36,7 +36,7 @@ public class Receipt implements Interfaces.Receipt {
     }
 
     @Override
-    public ArrayList<Product> getProducts() {
+    public ArrayList<IProduct> getProducts() {
         return this.products;
     }
 
@@ -44,4 +44,8 @@ public class Receipt implements Interfaces.Receipt {
     public double getPrice() {
         return this.price;
     }
+
+    //TODO
+    // - Add File Writing Functionality
+    // - Add Unit Tests
 }

@@ -1,7 +1,9 @@
+import Interfaces.IProduct;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
-public class Product implements Interfaces.Product {
+public class Product implements IProduct {
     private int id;
     private String name;
     private double deliveryPrice;
@@ -10,10 +12,10 @@ public class Product implements Interfaces.Product {
     private double percentageAdded;
     private double percentageRemoved;
     private int periodForDiscount;
-    private int amountLeft;
+    private int amount;
 
     public Product(int _id, String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible,
-                   double _percentageAdded, double _percentageRemoved, int _periodForDiscount, int _amountLeft){
+                   double _percentageAdded, double _percentageRemoved, int _periodForDiscount, int _amount){
         this.id = _id;
         this.deliveryPrice = _deliveryPrice;
         this.expirationDate = _expirationDate;
@@ -21,7 +23,7 @@ public class Product implements Interfaces.Product {
         this.percentageAdded = _percentageAdded;
         this.percentageRemoved = _percentageRemoved;
         this.periodForDiscount = _periodForDiscount;
-        this.amountLeft = _amountLeft;
+        this.amount = _amount;
     }
 
     @Override
@@ -50,8 +52,8 @@ public class Product implements Interfaces.Product {
     }
 
     @Override
-    public int getAmountLeft() {
-        return this.amountLeft;
+    public int getAmount() {
+        return this.amount;
     }
 
     @Override
@@ -70,10 +72,13 @@ public class Product implements Interfaces.Product {
     @Override
     public double sell(int amount) {
 
-        if (this.amountLeft - amount >= 0){
+        if (this.amount - amount >= 0){
             return this.calculatePrice() * amount;
         }
 
-        throw new IllegalArgumentException("Not enough products! Products over limit: " + (amount - this.amountLeft));
+        throw new IllegalArgumentException("Not enough products! Products over limit: " + (amount - this.amount));
     }
+
+    //TODO
+    // - Add Unit Tests
 }

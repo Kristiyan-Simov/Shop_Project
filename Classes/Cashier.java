@@ -1,9 +1,10 @@
-import Interfaces.Product;
+import Interfaces.ICashier;
+import Interfaces.IProduct;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Cashier implements Interfaces.Cashier {
+public class Cashier implements ICashier {
     private String name;
     private int id;
     private double salary;
@@ -30,11 +31,11 @@ public class Cashier implements Interfaces.Cashier {
     }
 
     @Override
-    public Receipt sell(ArrayList<Product> products, double customerMoney) {
+    public Receipt sell(ArrayList<IProduct> products, double customerMoney) {
         double price = 0;
 
         int amount = 0;
-        Product previousProduct = products.get(0);
+        IProduct previousProduct = products.get(0);
 
         for (int i = 1; i < products.size(); i++){
             if (products.get(i).getID() == previousProduct.getID()){
@@ -56,4 +57,9 @@ public class Cashier implements Interfaces.Cashier {
 
         return receipt;
     }
+    //TODO
+    // - Add Unit Tests
+
+    //FixMe
+    // - Selling Products Functionality
 }

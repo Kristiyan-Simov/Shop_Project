@@ -3,10 +3,10 @@ package Interfaces;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public interface Receipt {
+public interface IReceipt {
     public int getID();
-    public Cashier getCashier();
+    public ICashier getCashier();
     public LocalDateTime getCreationTime();
-    public ArrayList<Product> getProducts();
+    public ArrayList<IProduct> getProducts();
     public double getPrice();
 }
