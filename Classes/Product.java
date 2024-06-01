@@ -6,13 +6,22 @@ public class Product implements Interfaces.Product {
     private String name;
     private double deliveryPrice;
     private LocalDate expirationDate;
-    public boolean edible;
+    private boolean edible;
+    private double percentageAdded;
+    private double percentageRemoved;
+    private int periodForDiscount;
+    private int amountLeft;
 
-    public Product(int _id, String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible){
+    public Product(int _id, String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible,
+                   double _percentageAdded, double _percentageRemoved, int _periodForDiscount, int _amountLeft){
         this.id = _id;
         this.deliveryPrice = _deliveryPrice;
         this.expirationDate = _expirationDate;
         this.edible = _edible;
+        this.percentageAdded = _percentageAdded;
+        this.percentageRemoved = _percentageRemoved;
+        this.periodForDiscount = _periodForDiscount;
+        this.amountLeft = _amountLeft;
     }
 
     @Override
@@ -42,11 +51,11 @@ public class Product implements Interfaces.Product {
 
     @Override
     public int getAmountLeft() {
-        return 0;
+        return this.amountLeft;
     }
 
     @Override
-    public double calculatePrice(double percentageAdded, double percentageRemoved, int periodForDiscount) {
+    public double calculatePrice() {
         double price = this.deliveryPrice;
         price += deliveryPrice * percentageAdded;
         long daysUntilExpiry = this.expirationDate.until(LocalDate.now(), ChronoUnit.DAYS);
@@ -56,5 +65,15 @@ public class Product implements Interfaces.Product {
         }
 
         return price;
+    }
+
+    @Override
+    public double sell(int amount) {
+
+        if (this.amountLeft - amount >= 0){
+            return this.calculatePrice() * amount;
+        }
+
+        throw new IllegalArgumentException("Not enough products! Products over limit: " + (amount - this.amountLeft));
     }
 }
