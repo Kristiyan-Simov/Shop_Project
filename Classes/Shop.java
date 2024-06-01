@@ -63,6 +63,23 @@ public class Shop implements IShop {
     }
 
     @Override
+    public ICashier hireCashier(ICashier cashier) {
+        this.cashiers.add(cashier);
+        return cashier;
+    }
+
+    @Override
+    public ICashier fireCasher(ICashier cashier) {
+        this.cashiers.remove(cashier);
+        return cashier;
+    }
+
+    @Override
+    public double sellProducts(ArrayList<IProduct> products) {
+        return 0;
+    }
+
+    @Override
     public IReceipt createReceipt(ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price) {
         int id = this.receipts.size();
 
@@ -108,8 +125,6 @@ public class Shop implements IShop {
     }
 
     //TODO
-    // - Add Hiring And Firing Cashiers Functionality
     // - Fix Receipt Creation
-    // - Add Selling Products Functionality
     // - Add Unit Tests
 }

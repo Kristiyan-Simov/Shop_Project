@@ -46,6 +46,5 @@ public class Receipt implements IReceipt {
     }
 
     //TODO
-    // - Add File Writing Functionality
     // - Add Unit Tests
 }
