@@ -31,37 +31,4 @@ public class Cashier implements ICashier {
     public double getSalary() {
         return this.salary;
     }
-
-    @Override
-    public Receipt sell(ArrayList<IProduct> products, double customerMoney) {
-        double price = 0;
-
-        int amount = 0;
-        IProduct previousProduct = products.get(0);
-
-        for (int i = 1; i < products.size(); i++){
-            if (products.get(i).getID() == previousProduct.getID()){
-                amount++;
-            }
-            else{
-                price += previousProduct.sell(amount);
-                amount = 1;
-            }
-
-            previousProduct = products.get(i);
-        }
-
-        if (price > customerMoney){
-            throw new IllegalArgumentException("Customer doesn't have enough money! Money over limit: " + (price - customerMoney));
-        }
-
-        Receipt receipt = new Receipt(1234, this, LocalDateTime.now(), products, price);
-
-        return receipt;
-    }
-    //TODO
-    // - Add Unit Tests
-
-    //FixMe
-    // - Selling Products Functionality
 }

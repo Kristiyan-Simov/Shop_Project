@@ -131,11 +131,11 @@ public class Shop implements IShop {
     @Override
     public ICashier fireCasher(String name) {
 
-        for (ICashier cashier : this.cashiers){
-            if (cashier.getName() == name){
-                ICashier fireCashier = cashier;
-                this.cashiers.remove(cashier);
-                return fireCashier;
+        for (int i = 0; i < this.cashiers.size(); i++){
+            if (this.cashiers.get(i).getName() == name){
+                ICashier firedCashier = this.cashiers.get(i);
+                this.cashiers.remove(this.cashiers.get(i));
+                return firedCashier;
             }
         }
 
