@@ -22,7 +22,7 @@ public class ReceiptHandler {
         return new Receipt(createdReceipts, _cashier, _creationTime, _products, _price);
     }
 
-    public static String saveReceipt(Receipt receipt) {
+    public static String saveReceipt(IReceipt receipt) {
         String fileName = "Receipts/" + "receipt_" + receipt.getID() + ".txt";
 
         try {

@@ -57,7 +57,8 @@ class ShopTest {
     void fireCashierRemovesCashiers() {
         ICashier cashier = new Cashier("Pesho", 16, 600);
         shop.hireCashier(cashier);
-        shop.fireCasher(cashier);
+        shop.fireCasher("Pesho");
+        assertEquals(0, shop.getCashiers().size());
     }
 
     @Test

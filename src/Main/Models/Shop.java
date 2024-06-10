@@ -129,9 +129,17 @@ public class Shop implements IShop {
     }
 
     @Override
-    public ICashier fireCasher(ICashier cashier) {
-        this.cashiers.remove(cashier);
-        return cashier;
+    public ICashier fireCasher(String name) {
+
+        for (ICashier cashier : this.cashiers){
+            if (cashier.getName() == name){
+                ICashier fireCashier = cashier;
+                this.cashiers.remove(cashier);
+                return fireCashier;
+            }
+        }
+
+        return null;
     }
 
     @Override
@@ -140,10 +148,14 @@ public class Shop implements IShop {
         double endPrice = 0;
 
         for (IProduct product : this.products){
-            if (products.containsKey(product.getName())){
-                product.sell(products.get(product.getName()));
-                endPrice += product.calculatePrice() * products.get(product.getName());
-                producsSoldToCustomer.add(product);
+            try {
+                if (products.containsKey(product.getName())){
+                    product.sell(products.get(product.getName()));
+                    endPrice += product.calculatePrice() * products.get(product.getName());
+                    producsSoldToCustomer.add(product);
+                }
+            }catch (Exception e){
+                System.out.println(product.getName() + " - " + e.toString());
             }
         }
 
@@ -189,5 +201,12 @@ public class Shop implements IShop {
     @Override
     public double calculateTurnaroundRate() {
         return this.calculateProductSoldEarnings() - (this.calculateEmployeeSalarySpending() + calculateProductDeliverySpending());
+    }
+
+    @Override
+    public void saveReceipts() {
+        for (IReceipt receipt : this.receipts){
+            ReceiptHandler.saveReceipt(receipt);
+        }
     }
 }

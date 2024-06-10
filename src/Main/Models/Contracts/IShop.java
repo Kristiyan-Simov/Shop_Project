@@ -18,10 +18,11 @@ public interface IShop {
     void deliverProducts(String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible,
                                 int _amount);
     ICashier hireCashier(ICashier cashier);
-    ICashier fireCasher(ICashier cashier);
+    ICashier fireCasher(String name);
     IReceipt sellProducts(HashMap<String, Integer> products, int storeLine);
     double calculateEmployeeSalarySpending();
     double calculateProductDeliverySpending();
     double calculateProductSoldEarnings();
     double calculateTurnaroundRate();
+    void saveReceipts();
 }
