@@ -5,6 +5,7 @@ import Main.Models.Contracts.IProduct;
 import Main.Models.Contracts.IReceipt;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class Receipt implements IReceipt {
@@ -49,10 +50,12 @@ public class Receipt implements IReceipt {
 
     @Override
     public String toString() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy | HH:mm:ss");
+
         StringBuilder sb = new StringBuilder();
         sb.append("Receipt: ").append(this.id).append('\n');
         sb.append("Cashier: ").append(this.cashier).append('\n');
-        sb.append("Date: ").append(this.creationTime).append('\n');
+        sb.append("Date: ").append(this.creationTime.format(formatter)).append('\n');
         sb.append("Products:\n");
         for (IProduct product : this.products){
             sb.append(product.toString()).append('\n');
@@ -62,8 +65,4 @@ public class Receipt implements IReceipt {
 
         return sb.toString().trim();
     }
-
-
-    //TODO
-    // - Add Unit Tests
 }

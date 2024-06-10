@@ -3,6 +3,7 @@ package Main.Models.Contracts;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public interface IShop {
     ArrayList<ICashier> getCashiers();
@@ -10,12 +11,15 @@ public interface IShop {
     ArrayList<IProduct> getSoldProducts();
     ArrayList<IProduct> getProducts();
     ArrayList<IReceipt> getReciepts();
-    void deliverProducts(int _id, String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible,
+    double getEdibleAdditionalPrice();
+    double getInedibleAdditionalPrice();
+    double getExpirationDiscount();
+    int getMinDaysForDiscount();
+    void deliverProducts(String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible,
                                 int _amount);
     ICashier hireCashier(ICashier cashier);
     ICashier fireCasher(ICashier cashier);
-    double sellProducts(ArrayList<IProduct> products);
-    IReceipt createReceipt(ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price);
+    IReceipt sellProducts(HashMap<String, Integer> products, int storeLine);
     double calculateEmployeeSalarySpending();
     double calculateProductDeliverySpending();
     double calculateProductSoldEarnings();

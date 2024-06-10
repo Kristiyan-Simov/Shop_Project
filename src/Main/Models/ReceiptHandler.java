@@ -53,7 +53,4 @@ public class ReceiptHandler {
 
         return content.toString();
     }
-
-    //TODO
-    // - Add Unit Tests
 }

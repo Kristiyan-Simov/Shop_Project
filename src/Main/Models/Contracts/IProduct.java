@@ -9,6 +9,7 @@ public interface IProduct {
     LocalDate getExpirationDate();
     boolean getEdible();
     int getAmount();
+    void deliverProducts(int amount);
     double calculatePrice();
     double sell(int amount);
 }

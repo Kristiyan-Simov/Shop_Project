@@ -2,6 +2,8 @@ package Main.Models;
 
 import Main.Models.Contracts.IProduct;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.time.format.DateTimeFormatter;
@@ -20,6 +22,7 @@ public class Product implements IProduct {
     public Product(int _id, String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible,
                    double _percentageAdded, double _percentageRemoved, int _periodForDiscount, int _amount){
         this.id = _id;
+        this.name = _name;
         this.deliveryPrice = _deliveryPrice;
         this.expirationDate = _expirationDate;
         this.edible = _edible;
@@ -60,13 +63,26 @@ public class Product implements IProduct {
     }
 
     @Override
+    public void deliverProducts(int amount) {
+        if (amount > 0){
+            this.amount += amount;
+        }
+        else {
+            throw new IllegalArgumentException("Cannot add negative amount of products!");
+        }
+    }
+
+    @Override
     public double calculatePrice() {
         double price = this.deliveryPrice;
-        price += deliveryPrice * percentageAdded;
-        long daysUntilExpiry = this.expirationDate.until(LocalDate.now(), ChronoUnit.DAYS);
+        price += deliveryPrice * (percentageAdded / 100);
+        long daysUntilExpiry = LocalDate.now().until(this.expirationDate, ChronoUnit.DAYS);
 
-        if (daysUntilExpiry <= periodForDiscount && daysUntilExpiry >= 0){
-            price -= price * percentageRemoved;
+        if (daysUntilExpiry <= 0){
+            price = -1;
+        }
+        else if (daysUntilExpiry <= periodForDiscount){
+            price -= price * (percentageRemoved / 100);
         }
 
         return price;
@@ -74,6 +90,10 @@ public class Product implements IProduct {
 
     @Override
     public double sell(int amount) {
+
+        if (LocalDate.now().until(this.expirationDate, ChronoUnit.DAYS) <= 0){
+            throw new IllegalArgumentException("Product Expired!");
+        }
 
         if (this.amount - amount >= 0){
             return this.calculatePrice() * amount;
@@ -84,11 +104,13 @@ public class Product implements IProduct {
 
     @Override
     public String toString(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
         StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(this.name).append('\n');
-        sb.append(this.edible?"Edible":"Inedible");
+        sb.append(this.edible?"Edible:":"Inedible:").append('\n');
         sb.append("Price: ").append(this.calculatePrice()).append('\n');
-        sb.append("Expiration Date: ").append(DateTimeFormatter.ofPattern("dd/MM/yyyy")).append('\n');
+        sb.append("Expiration Date: ").append(this.expirationDate.format(formatter)).append('\n');
 
         return sb.toString().trim();
     }

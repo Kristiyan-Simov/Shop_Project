@@ -8,8 +8,10 @@ import Main.Models.Contracts.IShop;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Shop implements IShop {
+
     private ArrayList<ICashier> cashiers;
     private ArrayList<IProduct> deliveredProducts;
     private ArrayList<IProduct> soldProducts;
@@ -31,6 +33,39 @@ public class Shop implements IShop {
         this.percentageAddedInedible = _percentageAddedInedible;
         this.percentageRemovedNearExpiry = _percentageRemovedNearExpiry;
         this.minimumDaysUntilExpiry = _minimumDaysUntilExpiry;
+    }
+
+    public Shop(double _percentageAddedEdible, double _percentageAddedInedible,
+                double _percentageRemovedNearExpiry, int _minimumDaysUntilExpiry){
+        this.cashiers = new ArrayList<>();
+        this.deliveredProducts = new ArrayList<IProduct>();
+        this.soldProducts = new ArrayList<IProduct>();
+        this.products = new ArrayList<IProduct>();
+        this.receipts = new ArrayList<IReceipt>();
+        this.percentageAddedEdible = _percentageAddedEdible;
+        this.percentageAddedInedible = _percentageAddedInedible;
+        this.percentageRemovedNearExpiry = _percentageRemovedNearExpiry;
+        this.minimumDaysUntilExpiry = _minimumDaysUntilExpiry;
+    }
+
+    @Override
+    public double getEdibleAdditionalPrice() {
+        return this.percentageAddedEdible;
+    }
+
+    @Override
+    public double getInedibleAdditionalPrice() {
+        return this.percentageAddedInedible;
+    }
+
+    @Override
+    public double getExpirationDiscount() {
+        return this.percentageRemovedNearExpiry;
+    }
+
+    @Override
+    public int getMinDaysForDiscount() {
+        return this.minimumDaysUntilExpiry;
     }
 
     @Override
@@ -59,13 +94,36 @@ public class Shop implements IShop {
     }
 
     @Override
-    public void deliverProducts(int _id, String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible, int _amount) {
-        Product product = new Product(_id, _name, _deliveryPrice, _expirationDate, _edible,
+    public void deliverProducts(String _name, double _deliveryPrice, LocalDate _expirationDate, boolean _edible, int _amount) {
+        IProduct product = new Product(this.products.size(), _name, _deliveryPrice, _expirationDate, _edible,
                 _edible ? percentageAddedEdible : percentageAddedInedible, percentageRemovedNearExpiry, minimumDaysUntilExpiry, _amount);
+
+        if (this.products.isEmpty()){
+            this.products.add(product);
+            this.deliveredProducts.add(product);
+        }
+        else{
+            for (IProduct p : this.products){
+                if (p.getName() == product.getName()){
+                    p.deliverProducts(product.getAmount());
+                    this.deliveredProducts.add(product);
+                    return;
+                }
+            }
+
+            this.products.add(product);
+            this.deliveredProducts.add(product);
+        }
     }
 
     @Override
     public ICashier hireCashier(ICashier cashier) {
+        for (ICashier iCashier : this.cashiers){
+            if (iCashier.getID() == cashier.getID()){
+                throw new IllegalArgumentException("Cashier Already Hired!");
+            }
+        }
+
         this.cashiers.add(cashier);
         return cashier;
     }
@@ -77,15 +135,22 @@ public class Shop implements IShop {
     }
 
     @Override
-    public double sellProducts(ArrayList<IProduct> products) {
-        return 0;
-    }
+    public IReceipt sellProducts(HashMap<String, Integer> products, int storeLine) {
+        ArrayList<IProduct> producsSoldToCustomer = new ArrayList<>();
+        double endPrice = 0;
 
-    @Override
-    public IReceipt createReceipt(ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price) {
-        int id = this.receipts.size();
+        for (IProduct product : this.products){
+            if (products.containsKey(product.getName())){
+                product.sell(products.get(product.getName()));
+                endPrice += product.calculatePrice() * products.get(product.getName());
+                producsSoldToCustomer.add(product);
+            }
+        }
 
-        return new Receipt(id, _cashier, _creationTime, _products, _price);
+        IReceipt receipt = ReceiptHandler.createReceipt(this.cashiers.get(storeLine - 1), LocalDateTime.now(), producsSoldToCustomer, endPrice);
+        this.receipts.add(receipt);
+
+        return receipt;
     }
 
     @Override
@@ -125,8 +190,4 @@ public class Shop implements IShop {
     public double calculateTurnaroundRate() {
         return this.calculateProductSoldEarnings() - (this.calculateEmployeeSalarySpending() + calculateProductDeliverySpending());
     }
-
-    //TODO
-    // - Fix Main.Models.Receipt Creation
-    // - Add Unit Tests
 }
