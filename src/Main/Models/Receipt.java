@@ -1,6 +1,8 @@
-import Interfaces.ICashier;
-import Interfaces.IProduct;
-import Interfaces.IReceipt;
+package Main.Models;
+
+import Main.Models.Contracts.ICashier;
+import Main.Models.Contracts.IProduct;
+import Main.Models.Contracts.IReceipt;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -44,6 +46,23 @@ public class Receipt implements IReceipt {
     public double getPrice() {
         return this.price;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Receipt: ").append(this.id).append('\n');
+        sb.append("Cashier: ").append(this.cashier).append('\n');
+        sb.append("Date: ").append(this.creationTime).append('\n');
+        sb.append("Products:\n");
+        for (IProduct product : this.products){
+            sb.append(product.toString()).append('\n');
+        }
+        sb.append("------------------------------------------\n");
+        sb.append("Total Price: ").append(this.price);
+
+        return sb.toString().trim();
+    }
+
 
     //TODO
     // - Add Unit Tests

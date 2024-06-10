@@ -1,7 +1,9 @@
-import Interfaces.ICashier;
-import Interfaces.IProduct;
-import Interfaces.IReceipt;
-import Interfaces.IShop;
+package Main.Models;
+
+import Main.Models.Contracts.ICashier;
+import Main.Models.Contracts.IProduct;
+import Main.Models.Contracts.IReceipt;
+import Main.Models.Contracts.IShop;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -125,6 +127,6 @@ public class Shop implements IShop {
     }
 
     //TODO
-    // - Fix Receipt Creation
+    // - Fix Main.Models.Receipt Creation
     // - Add Unit Tests
 }

@@ -1,4 +1,4 @@
-package Interfaces;
+package Main.Models.Contracts;
 
 import java.util.ArrayList;
 

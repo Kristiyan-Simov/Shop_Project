@@ -1,7 +1,10 @@
-import Interfaces.IProduct;
+package Main.Models;
+
+import Main.Models.Contracts.IProduct;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.time.format.DateTimeFormatter;
 
 public class Product implements IProduct {
     private int id;
@@ -77,6 +80,17 @@ public class Product implements IProduct {
         }
 
         throw new IllegalArgumentException("Not enough products! Products over limit: " + (amount - this.amount));
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Name: ").append(this.name).append('\n');
+        sb.append(this.edible?"Edible":"Inedible");
+        sb.append("Price: ").append(this.calculatePrice()).append('\n');
+        sb.append("Expiration Date: ").append(DateTimeFormatter.ofPattern("dd/MM/yyyy")).append('\n');
+
+        return sb.toString().trim();
     }
 
     //TODO

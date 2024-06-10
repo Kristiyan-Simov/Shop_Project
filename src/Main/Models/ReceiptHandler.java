@@ -1,6 +1,8 @@
-import Interfaces.ICashier;
-import Interfaces.IProduct;
-import Interfaces.IReceipt;
+package Main.Models;
+
+import Main.Models.Contracts.ICashier;
+import Main.Models.Contracts.IProduct;
+import Main.Models.Contracts.IReceipt;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
