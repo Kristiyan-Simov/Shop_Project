@@ -3,14 +3,13 @@ import Main.Models.Contracts.ICashier;
 import Main.Models.Contracts.IProduct;
 import Main.Models.Shop;
 
-import java.io.Console;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(){
+    public static void main(String[] args){
         Scanner in = new Scanner(System.in);
 
         System.out.println("Welcome, please register Shop...");
@@ -25,14 +24,8 @@ public class Main {
 
         Shop shop = new Shop(ediblePercentageIncrease, inediblePercentageIncrease, expiryPercentageDecrease, daysNearExpiryForDiscount);
 
-        String line;
-        while (true) {
-            System.out.println("Enter Command:");
-            line = in.nextLine();
-
-            if (line == "stop"){
-                break;
-            }
+        String line = in.nextLine();
+        while (line != "stop") {
 
             String[] tokens = line.split("\\s+");
             String command = tokens[0];
@@ -88,6 +81,8 @@ public class Main {
             catch (Exception e){
                 System.out.println(e.toString());
             }
+
+            line = in.nextLine();
         }
     }
 }
