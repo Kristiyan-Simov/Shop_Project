@@ -19,6 +19,7 @@ public class ReceiptHandler {
 
     public static IReceipt createReceipt(ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price) {
         createdReceipts += 1;
+        System.out.println("Cashier - " + _cashier);
         return new Receipt(createdReceipts, _cashier, _creationTime, _products, _price);
     }
 

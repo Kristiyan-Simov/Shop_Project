@@ -54,7 +54,7 @@ public class Receipt implements IReceipt {
 
         StringBuilder sb = new StringBuilder();
         sb.append("Receipt: ").append(this.id).append('\n');
-        sb.append("Cashier: ").append(this.cashier).append('\n');
+        sb.append("Cashier: ").append(this.cashier.getName()).append('\n');
         sb.append("Date: ").append(this.creationTime.format(formatter)).append('\n');
         sb.append("Products:\n");
         for (IProduct product : this.products){

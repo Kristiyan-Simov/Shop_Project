@@ -37,7 +37,7 @@ class ShopTest {
 
     @Test
     void hireCashierAddsCashierCorrectly() {
-        ICashier cashier = new Cashier("Pesho", 16, 600);
+        ICashier cashier = new Cashier("Pesho", 1, 600);
         shop.hireCashier(cashier);
 
         assertEquals(cashier, shop.getCashiers().get(0));
@@ -45,9 +45,8 @@ class ShopTest {
 
     @Test
     void hireCashierThrowsWhenSameCashierHiredTwice(){
-
         assertThrows(IllegalArgumentException.class, ()->{
-            ICashier cashier = new Cashier("Pesho", 16, 600);
+            ICashier cashier = new Cashier("Pesho", 1, 600);
             shop.hireCashier(cashier);
             shop.hireCashier(cashier);
         });
@@ -55,10 +54,20 @@ class ShopTest {
 
     @Test
     void fireCashierRemovesCashiers() {
-        ICashier cashier = new Cashier("Pesho", 16, 600);
+        ICashier cashier = new Cashier("Pesho", 1, 600);
         shop.hireCashier(cashier);
         shop.fireCasher("Pesho");
         assertEquals(0, shop.getCashiers().size());
+    }
+
+    @Test
+    void fireCashierFiresWhenMoreThanOneCashiersExist(){
+        ICashier cashier1 = new Cashier("Pesho", 1, 600);
+        ICashier cashier2 = new Cashier("Ivan", 2, 1000);
+        shop.hireCashier(cashier1);
+        shop.hireCashier(cashier2);
+        ICashier fired = shop.fireCasher("Pesho");
+        assertEquals(1, shop.getCashiers().size());
     }
 
     @Test

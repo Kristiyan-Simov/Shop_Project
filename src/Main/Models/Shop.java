@@ -5,6 +5,8 @@ import Main.Models.Contracts.IProduct;
 import Main.Models.Contracts.IReceipt;
 import Main.Models.Contracts.IShop;
 
+import java.io.Console;
+import java.lang.constant.Constable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -130,9 +132,8 @@ public class Shop implements IShop {
 
     @Override
     public ICashier fireCasher(String name) {
-
         for (int i = 0; i < this.cashiers.size(); i++){
-            if (this.cashiers.get(i).getName() == name){
+            if (this.cashiers.get(i).getName().equals(name)){
                 ICashier firedCashier = this.cashiers.get(i);
                 this.cashiers.remove(this.cashiers.get(i));
                 return firedCashier;
@@ -144,7 +145,7 @@ public class Shop implements IShop {
 
     @Override
     public IReceipt sellProducts(HashMap<String, Integer> products, int storeLine) {
-        ArrayList<IProduct> producsSoldToCustomer = new ArrayList<>();
+        ArrayList<IProduct> productsSoldToCustomer = new ArrayList<>();
         double endPrice = 0;
 
         for (IProduct product : this.products){
@@ -152,14 +153,14 @@ public class Shop implements IShop {
                 if (products.containsKey(product.getName())){
                     product.sell(products.get(product.getName()));
                     endPrice += product.calculatePrice() * products.get(product.getName());
-                    producsSoldToCustomer.add(product);
+                    productsSoldToCustomer.add(product);
                 }
             }catch (Exception e){
                 System.out.println(product.getName() + " - " + e.toString());
             }
         }
 
-        IReceipt receipt = ReceiptHandler.createReceipt(this.cashiers.get(storeLine - 1), LocalDateTime.now(), producsSoldToCustomer, endPrice);
+        IReceipt receipt = ReceiptHandler.createReceipt(this.cashiers.get(storeLine - 1), LocalDateTime.now(), productsSoldToCustomer, endPrice);
         this.receipts.add(receipt);
 
         return receipt;

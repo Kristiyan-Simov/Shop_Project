@@ -46,17 +46,19 @@ public class Main {
                         }
                         break;
                     case "FireCashier":
-                        ICashier cashier = shop.fireCasher(tokens[1].toLowerCase());
+                        ICashier cashier = shop.fireCasher(tokens[1].toLowerCase().trim());
                         System.out.println(cashier.getName());
                         break;
                     case "Buy":
                         HashMap<String, Integer> cart = new HashMap<String, Integer>();
                         int checkoutLine = Integer.parseInt(tokens[1]);
 
-                        while (line != "checkout"){
-                            line = in.nextLine();
+                        line = in.nextLine();
+
+                        while (!line.equals("checkout")){
                             tokens = line.split("\\s+");
                             cart.put(tokens[0], Integer.parseInt(tokens[1]));
+                            line = in.nextLine();
                         }
 
                         System.out.println(shop.sellProducts(cart, checkoutLine));
@@ -79,7 +81,8 @@ public class Main {
                 }
             }
             catch (Exception e){
-                System.out.println(e.toString());
+                System.out.println("Uh Oh, Sinky!");
+                throw e;
             }
 
             line = in.nextLine();
