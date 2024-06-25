@@ -52,16 +52,17 @@ public class Main {
                     case "Buy":
                         HashMap<String, Integer> cart = new HashMap<String, Integer>();
                         int checkoutLine = Integer.parseInt(tokens[1]);
+                        double clientMoney = Double.parseDouble(tokens[2]);
 
                         line = in.nextLine();
 
                         while (!line.equals("checkout")){
                             tokens = line.split("\\s+");
-                            cart.put(tokens[0], Integer.parseInt(tokens[1]));
+                            cart.put(tokens[0].toLowerCase(), Integer.parseInt(tokens[1]));
                             line = in.nextLine();
                         }
 
-                        System.out.println(shop.sellProducts(cart, checkoutLine));
+                        System.out.println(shop.sellProducts(cart, checkoutLine, clientMoney).toString());
                         break;
                     case "SaveReceipts":
                         shop.saveReceipts();

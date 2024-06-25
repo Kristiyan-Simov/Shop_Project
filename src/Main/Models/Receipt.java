@@ -63,6 +63,9 @@ public class Receipt implements IReceipt {
         sb.append("------------------------------------------\n");
         sb.append("Total Price: ").append(this.price);
 
+        //System.out.println(sb.toString().trim());
+        //System.out.println("\n\n\n");
+
         return sb.toString().trim();
     }
 }

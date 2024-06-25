@@ -108,7 +108,8 @@ public class Product implements IProduct {
 
         StringBuilder sb = new StringBuilder();
         sb.append("Name: ").append(this.name).append('\n');
-        sb.append(this.edible?"Edible:":"Inedible:").append('\n');
+        sb.append(this.edible?"--Edible--":"--Inedible--").append('\n');
+        sb.append("Amount: ").append(this.amount).append('\n');
         sb.append("Price: ").append(this.calculatePrice()).append('\n');
         sb.append("Expiration Date: ").append(this.expirationDate.format(formatter)).append('\n');
 

@@ -19,7 +19,7 @@ public interface IShop {
                                 int _amount);
     ICashier hireCashier(ICashier cashier);
     ICashier fireCasher(String name);
-    IReceipt sellProducts(HashMap<String, Integer> products, int storeLine);
+    IReceipt sellProducts(HashMap<String, Integer> products, int storeLine, double clientMoney);
     double calculateEmployeeSalarySpending();
     double calculateProductDeliverySpending();
     double calculateProductSoldEarnings();

@@ -19,16 +19,22 @@ public class ReceiptHandler {
 
     public static IReceipt createReceipt(ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price) {
         createdReceipts += 1;
-        System.out.println("Cashier - " + _cashier);
         return new Receipt(createdReceipts, _cashier, _creationTime, _products, _price);
     }
 
     public static String saveReceipt(IReceipt receipt) {
+        File folder = new File("Receipts/");
+
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
         String fileName = "Receipts/" + "receipt_" + receipt.getID() + ".txt";
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
             writer.write(receipt.toString());
+            writer.close();
         } catch (IOException e){
             System.err.println("Error saving the receipt to file: " + e.getMessage());
         }

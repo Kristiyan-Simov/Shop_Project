@@ -144,20 +144,33 @@ public class Shop implements IShop {
     }
 
     @Override
-    public IReceipt sellProducts(HashMap<String, Integer> products, int storeLine) {
+    public IReceipt sellProducts(HashMap<String, Integer> _products, int storeLine, double clientMoney) {
         ArrayList<IProduct> productsSoldToCustomer = new ArrayList<>();
         double endPrice = 0;
 
         for (IProduct product : this.products){
             try {
-                if (products.containsKey(product.getName())){
-                    product.sell(products.get(product.getName()));
-                    endPrice += product.calculatePrice() * products.get(product.getName());
-                    productsSoldToCustomer.add(product);
+                if (_products.containsKey(product.getName())){
+                    product.sell(_products.get(product.getName()));
+                    endPrice += product.calculatePrice() * _products.get(product.getName());
+
+                    IProduct temp = new Product(product.getID(), product.getName(), product.getDeliveryPrice(), product.getExpirationDate(),
+                            product.getEdible(), (product.getEdible()?(this.getEdibleAdditionalPrice()):(this.getInedibleAdditionalPrice())),
+                            this.percentageRemovedNearExpiry, this.getMinDaysForDiscount(), _products.get(product.getName()));
+
+                    productsSoldToCustomer.add(temp);
+                    this.soldProducts.add(temp);
                 }
             }catch (Exception e){
                 System.out.println(product.getName() + " - " + e.toString());
             }
+        }
+
+        if (clientMoney >= endPrice){
+            System.out.println("Change - " + String.format( "%.2f", (clientMoney - endPrice)) + "\n----\n");
+        }
+        else {
+            throw new IllegalArgumentException("Not enough money!");
         }
 
         IReceipt receipt = ReceiptHandler.createReceipt(this.cashiers.get(storeLine - 1), LocalDateTime.now(), productsSoldToCustomer, endPrice);
@@ -193,7 +206,7 @@ public class Shop implements IShop {
         double earning = 0;
 
         for (IProduct product : this.soldProducts){
-            earning += product.calculatePrice();
+            earning += product.calculatePrice() * product.getAmount();
         }
 
         return earning;
