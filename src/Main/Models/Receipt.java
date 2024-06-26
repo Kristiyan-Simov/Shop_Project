@@ -1,5 +1,6 @@
 package Main.Models;
 
+import Main.Common.Exceptions.EmptyCartCheckoutException;
 import Main.Models.Contracts.ICashier;
 import Main.Models.Contracts.IProduct;
 import Main.Models.Contracts.IReceipt;
@@ -21,6 +22,14 @@ public class Receipt implements IReceipt {
         this.products = _products;
         this.creationTime = _creationTime;
         this.price = _price;
+    }
+
+    private void setProducts(ArrayList<IProduct> _products){
+        if (_products.isEmpty()){
+            throw new EmptyCartCheckoutException("Producsts cannot be null");
+        }
+
+        this.products = _products;
     }
 
     @Override
@@ -62,9 +71,6 @@ public class Receipt implements IReceipt {
         }
         sb.append("------------------------------------------\n");
         sb.append("Total Price: ").append(this.price);
-
-        //System.out.println(sb.toString().trim());
-        //System.out.println("\n\n\n");
 
         return sb.toString().trim();
     }

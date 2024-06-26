@@ -1,5 +1,7 @@
 package Main.Models;
 
+import Main.Common.Exceptions.DuplicateCashierException;
+import Main.Common.Exceptions.InsufficientFundsException;
 import Main.Models.Contracts.ICashier;
 import Main.Models.Contracts.IProduct;
 import Main.Models.Contracts.IReceipt;
@@ -122,7 +124,7 @@ public class Shop implements IShop {
     public ICashier hireCashier(ICashier cashier) {
         for (ICashier iCashier : this.cashiers){
             if (iCashier.getID() == cashier.getID()){
-                throw new IllegalArgumentException("Cashier Already Hired!");
+                throw new DuplicateCashierException("Cashier Already Hired!");
             }
         }
 
@@ -170,7 +172,7 @@ public class Shop implements IShop {
             System.out.println("Change - " + String.format( "%.2f", (clientMoney - endPrice)) + "\n----\n");
         }
         else {
-            throw new IllegalArgumentException("Not enough money!");
+            throw new InsufficientFundsException("Not enough money!");
         }
 
         IReceipt receipt = ReceiptHandler.createReceipt(this.cashiers.get(storeLine - 1), LocalDateTime.now(), productsSoldToCustomer, endPrice);

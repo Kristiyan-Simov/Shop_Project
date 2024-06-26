@@ -3,6 +3,7 @@ package Main.Models.Contracts;
 import java.time.LocalDate;
 
 public interface IProduct {
+    void setExpirationDate(LocalDate newExpirationDate);
     int getID();
     String getName();
     double getDeliveryPrice();

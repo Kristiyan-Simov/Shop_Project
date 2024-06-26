@@ -1,5 +1,9 @@
 package Main.Models;
 
+import Main.Common.Exceptions.ExpirationDateBeforeTodayException;
+import Main.Common.Exceptions.InsufficientProductsException;
+import Main.Common.Exceptions.NegativeAmountAddedException;
+import Main.Common.Exceptions.ProductExpiredException;
 import Main.Models.Contracts.IProduct;
 
 import java.text.DateFormat;
@@ -24,12 +28,21 @@ public class Product implements IProduct {
         this.id = _id;
         this.name = _name;
         this.deliveryPrice = _deliveryPrice;
-        this.expirationDate = _expirationDate;
+        setExpirationDate(_expirationDate);
         this.edible = _edible;
         this.percentageAdded = _percentageAdded;
         this.percentageRemoved = _percentageRemoved;
         this.periodForDiscount = _periodForDiscount;
         this.amount = _amount;
+    }
+
+    @Override
+    public void setExpirationDate(LocalDate newExpirationDate) {
+        if (!newExpirationDate.isAfter(LocalDate.now())){
+            throw new ExpirationDateBeforeTodayException("Expiration Date Cannot Be before Current Date");
+        }
+
+        this.expirationDate = newExpirationDate;
     }
 
     @Override
@@ -68,7 +81,7 @@ public class Product implements IProduct {
             this.amount += amount;
         }
         else {
-            throw new IllegalArgumentException("Cannot add negative amount of products!");
+            throw new NegativeAmountAddedException("Cannot add negative amount of products!");
         }
     }
 
@@ -92,14 +105,14 @@ public class Product implements IProduct {
     public double sell(int amount) {
 
         if (LocalDate.now().until(this.expirationDate, ChronoUnit.DAYS) <= 0){
-            throw new IllegalArgumentException("Product Expired!");
+            throw new ProductExpiredException("Product Expired!");
         }
 
         if (this.amount - amount >= 0){
             return this.calculatePrice() * amount;
         }
 
-        throw new IllegalArgumentException("Not enough products! Products over limit: " + (amount - this.amount));
+        throw new InsufficientProductsException("Not enough products! Products over limit: " + (amount - this.amount));
     }
 
     @Override
@@ -115,7 +128,4 @@ public class Product implements IProduct {
 
         return sb.toString().trim();
     }
-
-    //TODO
-    // - Add Unit Tests
 }
