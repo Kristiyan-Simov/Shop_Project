@@ -82,8 +82,7 @@ public class Main {
                 }
             }
             catch (Exception e){
-                System.out.println("Uh Oh, Sinky!");
-                throw e;
+                System.out.println(e.getMessage());
             }
 
             line = in.nextLine();
