@@ -1,6 +1,7 @@
 package Main.Models;
 
 import Main.Common.Exceptions.DuplicateCashierException;
+import Main.Common.Exceptions.EmptyCartCheckoutException;
 import Main.Common.Exceptions.InsufficientFundsException;
 import Main.Models.Contracts.ICashier;
 import Main.Models.Contracts.IProduct;

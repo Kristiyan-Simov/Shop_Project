@@ -1,9 +1,6 @@
 package Main.Models;
 
-import Main.Common.Exceptions.ExpirationDateBeforeTodayException;
-import Main.Common.Exceptions.InsufficientProductsException;
-import Main.Common.Exceptions.NegativeAmountAddedException;
-import Main.Common.Exceptions.ProductExpiredException;
+import Main.Common.Exceptions.*;
 import Main.Models.Contracts.IProduct;
 
 import java.text.DateFormat;
@@ -106,6 +103,10 @@ public class Product implements IProduct {
 
         if (LocalDate.now().until(this.expirationDate, ChronoUnit.DAYS) <= 0){
             throw new ProductExpiredException("Product Expired!");
+        }
+
+        if (amount <= 0){
+            throw new NegativeProductsSoldException("Cannot Sell Negative Products");
         }
 
         if (this.amount - amount >= 0){

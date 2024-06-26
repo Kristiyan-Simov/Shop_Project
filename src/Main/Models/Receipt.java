@@ -19,7 +19,7 @@ public class Receipt implements IReceipt {
     public Receipt(int _id, ICashier _cashier, LocalDateTime _creationTime, ArrayList<IProduct> _products, double _price){
         this.id = _id;
         this.cashier = _cashier;
-        this.products = _products;
+        setProducts(_products);
         this.creationTime = _creationTime;
         this.price = _price;
     }
